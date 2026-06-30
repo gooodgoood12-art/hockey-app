@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <title>ХК Автомобилист | Мобильное приложение</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            background: linear-gradient(135deg, #e8e4dc 0%, #dfdad0 100%);
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px;
+            position: relative;
+        }
+        
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                repeating-linear-gradient(45deg, rgba(0,0,0,0.02) 0px, rgba(0,0,0,0.02) 1px, transparent 1px, transparent 40px),
+                repeating-linear-gradient(135deg, rgba(0,0,0,0.02) 0px, rgba(0,0,0,0.02) 1px, transparent 1px, transparent 40px);
+            pointer-events: none;
+        }
+        
+        /* iPhone 8 Plus / 7 Plus стиль - ширина 560px, увеличенная высота */
+        .iphone-7-plus {
+            position: relative;
+            width: 560px;
+            height: 1000px;
+            background: #1a1a1a;
+            border-radius: 52px;
+            box-shadow: 
+                0 30px 40px -15px rgba(0, 0, 0, 0.4),
+                0 0 0 8px #2a2a2a,
+                0 0 0 12px #1f1f1f,
+                inset 0 0 0 2px rgba(255, 255, 255, 0.08);
+            transition: transform 0.3s ease;
+            transform: perspective(1200px) rotateX(2deg) rotateY(0deg);
+        }
+        
+        .iphone-7-plus:hover {
+            transform: perspective(1200px) rotateX(2deg) rotateY(0deg) translateY(-5px);
+        }
+        
+        .iphone-7-plus::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 52px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0.1) 100%);
+            pointer-events: none;
+        }
+        
+        .antenna-top {
+            position: absolute;
+            top: 22px;
+            left: 140px;
+            right: 140px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,215,0,0.3), rgba(255,215,0,0.5), rgba(255,215,0,0.3), transparent);
+            border-radius: 1px;
+            z-index: 10;
+        }
+        
+        .antenna-bottom {
+            position: absolute;
+            bottom: 22px;
+            left: 140px;
+            right: 140px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,215,0,0.3), rgba(255,215,0,0.5), rgba(255,215,0,0.3), transparent);
+            border-radius: 1px;
+            z-index: 10;
+        }
+        
+        .home-button {
+            position: absolute;
+            bottom: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: #1a1a1a;
+            border: 1px solid #3a3a3a;
+            box-shadow: inset 0 1px 2px rgba(255,255,255,0.08), 0 2px 4px rgba(0,0,0,0.3);
+            z-index: 20;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .home-button:active {
+            transform: translateX(-50%) scale(0.96);
+        }
+        
+        .home-button::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #2a2a2a, #111);
+            box-shadow: inset 0 0 2px rgba(255,255,255,0.1);
+        }
+        
+        .speaker-grill {
+            position: absolute;
+            top: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 170px;
+            height: 32px;
+            z-index: 15;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+        }
+        
+        .speaker {
+            width: 65px;
+            height: 4px;
+            background: #2a2a2a;
+            border-radius: 2px;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+        }
+        
+        .camera-lens {
+            width: 14px;
+            height: 14px;
+            background: radial-gradient(circle at 35% 35%, #1a3a5a, #0a1a2a);
+            border-radius: 50%;
+            box-shadow: 0 0 0 1px #3a3a3a;
+        }
+        
+        .sensor {
+            width: 8px;
+            height: 8px;
+            background: #3a2a1a;
+            border-radius: 50%;
+        }
+        
+        .app-screen {
+            position: absolute;
+            top: 38px;
+            left: 14px;
+            right: 14px;
+            bottom: 82px;
+            background: #ffffff;
+            border-radius: 40px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1);
+        }
+        
+        .screen-reflection {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 40%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 100%);
+            pointer-events: none;
+            border-radius: 40px 40px 0 0;
+            z-index: 10;
+        }
+        
+        .phone-shadow {
+            position: absolute;
+            bottom: -30px;
+            left: 25px;
+            right: 25px;
+            height: 30px;
+            background: radial-gradient(ellipse at center, rgba(0,0,0,0.3) 0%, transparent 70%);
+            filter: blur(8px);
+            border-radius: 50%;
+            z-index: -1;
+        }
+        
+        /* Контент приложения */
+        .app-status-bar {
+            background: #ffffff;
+            padding: 12px 20px 6px 20px;
+            font-size: 14px;
+            font-weight: 590;
+            color: #1a1a2e;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .top-header {
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 16px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .arena-switch {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #f5f5f5;
+            padding: 6px 12px;
+            border-radius: 40px;
+        }
+        
+        .arena-switch span {
+            font-size: 12px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 46px;
+            height: 24px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.2s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.2s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: #B22234;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+        
+        .logo-center img {
+            height: 38px;
+            width: auto;
+            display: block;
+        }
+        
+        .user-name-header {
+            background: #f0f0f0;
+            border-radius: 30px;
+            padding: 5px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #333;
+            font-size: 13px;
+            font-weight: 500;
+            margin-top: -2px;
+        }
+        
+        .user-name-header i {
+            color: #B22234;
+            font-size: 18px;
+        }
+        
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            scroll-behavior: smooth;
+            background: #f8f9fc;
+        }
+        
+        .bottom-nav {
+            background: #ffffff;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 8px 12px 10px;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            color: #6c6f78;
+            transition: 0.2s;
+            cursor: pointer;
+            font-weight: 500;
+            background: none;
+            border: none;
+        }
+        
+        .nav-item i { font-size: 22px; }
+        .nav-item.active { color: #B22234; }
+        
+        .card {
+            background: white;
+            border-radius: 28px;
+            padding: 18px;
+            margin-bottom: 18px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03);
+            border: 1px solid #edf2f7;
+        }
+        
+        .match-time {
+            font-size: 14px;
+            font-weight: 700;
+            margin-top: 6px;
+        }
+        
+        .big-title {
+            font-size: 22px;
+            font-weight: 800;
+            margin: 6px 0 2px;
+        }
+        
+        .button-primary {
+            background: #B22234;
+            border: none;
+            color: white;
+            font-weight: 700;
+            padding: 12px;
+            border-radius: 50px;
+            width: 100%;
+            font-size: 15px;
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        .button-outline {
+            background: transparent;
+            border: 1.8px solid #B22234;
+            color: #B22234;
+            font-weight: 600;
+            padding: 8px;
+            border-radius: 40px;
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        .flex-between { display: flex; justify-content: space-between; align-items: center; }
+        
+        .team-logo {
+            width: 28px;
+            height: 28px;
+            vertical-align: middle;
+            margin-right: 8px;
+            object-fit: contain;
+        }
+        
+        .player-photo {
+            width: 32px;
+            height: 32px;
+            background: #B22234;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-right: 8px;
+        }
+        
+        .player-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .bombardier-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            padding: 6px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .arena-photo {
+            border-radius: 24px;
+            overflow: hidden;
+            margin-bottom: 16px;
+            height: 180px;
+        }
+        
+        .arena-photo img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .product-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 12px;
+            cursor: pointer;
+        }
+        
+        .product-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 16px;
+            background: #f0f0f0;
+        }
+        
+        .product-info { flex: 1; }
+        .product-name { font-weight: 600; font-size: 14px; }
+        .price { font-weight: 800; color: #B22234; font-size: 16px; }
+        .text-muted { color: #6c757d; font-size: 12px; }
+        
+        .match-location {
+            background: #B2223410;
+            color: #B22234;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .news-item { margin-top: 12px; margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 12px; }
+        .news-item:last-child { border-bottom: none; }
+        .tag { background: #f0f0f0; padding: 2px 10px; border-radius: 30px; font-size: 11px; }
+        .match-info { margin-bottom: 16px; }
+        
+        .activity-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 8px;
+        }
+        
+        .activity-tab {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            background: #f0f2f5;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            color: #666;
+        }
+        
+        .activity-tab.active { background: #B22234; color: white; }
+        .activity-content { display: none; }
+        .activity-content.active-content { display: block; }
+        
+        .event-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .event-time {
+            background: #B22234;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            min-width: 70px;
+            text-align: center;
+        }
+        
+        .event-name { flex: 1; font-weight: 500; }
+        .bonus-available { color: #B22234; font-weight: 700; }
+        
+        .service-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+        
+        .card-title {
+            font-weight: 800;
+            font-size: 18px;
+            margin-bottom: 14px;
+            color: #222;
+            border-left: 4px solid #B22234;
+            padding-left: 12px;
+        }
+        
+        .standings-table {
+            width: 100%;
+            font-size: 11px;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+        
+        .standings-table th, .standings-table td {
+            padding: 10px 4px;
+            border-bottom: 1px solid #f0f0f0;
+            vertical-align: middle;
+            text-align: center;
+        }
+        
+        .standings-table th:first-child, .standings-table td:first-child { width: 35px; text-align: center; }
+        .standings-table th:nth-child(2), .standings-table td:nth-child(2) { width: 130px; text-align: left; }
+        .standings-table th:nth-child(3), .standings-table td:nth-child(3) { width: 35px; }
+        .standings-table th:nth-child(4), .standings-table td:nth-child(4) { width: 35px; }
+        .standings-table th:nth-child(5), .standings-table td:nth-child(5) { width: 35px; }
+        .standings-table th:nth-child(6), .standings-table td:nth-child(6) { width: 70px; }
+        .standings-table th:nth-child(7), .standings-table td:nth-child(7) { width: 40px; }
+        .standings-table th:nth-child(8), .standings-table td:nth-child(8) { width: 85px; }
+        
+        .standings-table th {
+            background: #f8f9fc;
+            font-weight: 700;
+            color: #555;
+            font-size: 10px;
+            white-space: nowrap;
+        }
+        
+        .sector-image {
+            width: 100%;
+            border-radius: 20px;
+            margin-top: 12px;
+        }
+        
+        .win-cell { color: #28a745; font-weight: 600; }
+        .loss-cell { color: #dc3545; }
+        .arena-icon { margin-right: 6px; color: #B22234; }
+        
+        .level-badge {
+            text-align: center;
+            padding: 12px;
+            background: #f0f2f5;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+        
+        .level-name {
+            font-size: 20px;
+            font-weight: 800;
+            color: #B22234;
+        }
+        
+        .progress-container { margin: 16px 0; }
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #6c757d;
+            margin-bottom: 6px;
+        }
+        
+        .progress-bar-bg {
+            background: #e0e0e0;
+            border-radius: 20px;
+            height: 12px;
+            overflow: hidden;
+        }
+        
+        .progress-fill-custom {
+            background: #B22234;
+            width: 0%;
+            height: 12px;
+            border-radius: 20px;
+            transition: width 0.3s;
+        }
+        
+        .bonus-balance {
+            text-align: center;
+            margin: 16px 0;
+        }
+        
+        .bonus-number {
+            font-size: 48px;
+            font-weight: 800;
+            color: #B22234;
+        }
+        
+        .earn-methods {
+            background: #f8f9fc;
+            border-radius: 20px;
+            padding: 12px;
+            margin-top: 12px;
+        }
+        
+        .earn-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .earn-icon {
+            font-size: 24px;
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        .earn-text { flex: 1; }
+        .earn-title { font-weight: 600; font-size: 14px; }
+        .earn-desc { font-size: 12px; color: #6c757d; }
+        
+        .privilege-card {
+            background: #FFF2F0;
+            border-radius: 16px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .promo-card {
+            background: linear-gradient(135deg, #B22234 0%, #8B1828 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .promo-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .discount-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        
+        .social-category {
+            background: rgba(255,255,255,0.15);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            display: inline-block;
+            margin: 4px 4px 0 0;
+        }
+        
+        .social-wrapper {
+            margin-top: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        
+        .pickup-info {
+            background: #FFF2F0;
+            padding: 16px;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            border: 1px solid #B2223420;
+        }
+        
+        .pickup-info h4 { color: #B22234; margin-bottom: 12px; }
+        
+        .order-summary {
+            background: #f8f9fc;
+            padding: 12px;
+            border-radius: 16px;
+            margin-top: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #B22234;
+            font-weight: 600;
+            margin-bottom: 16px;
+            cursor: pointer;
+        }
+        
+        .product-icon {
+            width: 48px;
+            height: 48px;
+            background: #f0f0f0;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            color: #B22234;
+        }
+        
+        .qrcode-display {
+            background: #f0f0f0;
+            height: 120px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 12px;
+        }
+        
+        .qrcode-display i {
+            font-size: 70px;
+            color: #222;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+            margin-top: 8px;
+            background: white;
+        }
+        
+        label {
+            font-weight: 600;
+            font-size: 14px;
+            margin-top: 12px;
+            display: block;
+        }
+        
+        .main-content::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .main-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        
+        .main-content::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="iphone-7-plus">
+        <div class="speaker-grill">
+            <div class="camera-lens"></div>
+            <div class="speaker"></div>
+            <div class="sensor"></div>
+        </div>
+        <div class="antenna-top"></div>
+        <div class="antenna-bottom"></div>
+        <div class="home-button"></div>
+        <div class="app-screen">
+            <div class="screen-reflection"></div>
+            <div class="app-status-bar">
+                <span>9:41</span>
+                <span><i class="fas fa-signal"></i> <i class="fas fa-battery-full"></i></span>
+            </div>
+            <div class="top-header">
+                <div class="arena-switch">
+                    <span>Я на Арене</span>
+                    <label class="switch"><input type="checkbox" id="arenaModeToggle"><span class="slider"></span></label>
+                </div>
+                <div class="logo-center">
+                    <img src="https://upload.wikimedia.org/wikipedia/ru/thumb/a/ae/HC_Avtomobilist_Logo.svg/1280px-HC_Avtomobilist_Logo.svg.png" alt="ХК Автомобилист">
+                </div>
+                <div class="user-name-header"><i class="fas fa-user"></i> <span>Анастасия Г.</span></div>
+            </div>
+
+            <div class="main-content" id="mainContent">
+                <div id="homeTab" class="tab-pane active-tab"><div id="homeContent"></div></div>
+                <div id="matchTab" class="tab-pane" style="display: none;"><div id="matchContent"></div></div>
+                <div id="arenaTab" class="tab-pane" style="display: none;"><div id="arenaContent"></div></div>
+                <div id="shopTab" class="tab-pane" style="display: none;"><div id="shopContent"></div></div>
+                <div id="profileTab" class="tab-pane" style="display: none;"><div id="profileContent"></div></div>
+                <div id="foodOrderPage" class="tab-pane" style="display: none;"><div id="foodOrderContent"></div></div>
+            </div>
+
+            <div class="bottom-nav">
+                <button class="nav-item active" data-tab="home"><i class="fas fa-home"></i><span>Главная</span></button>
+                <button class="nav-item" data-tab="match"><i class="fas fa-table-list"></i><span>Матч-центр</span></button>
+                <button class="nav-item" data-tab="arena"><i class="fas fa-building"></i><span>УГМК Арена</span></button>
+                <button class="nav-item" data-tab="shop"><i class="fas fa-store"></i><span>Магазин</span></button>
+                <button class="nav-item" data-tab="profile"><i class="fas fa-user"></i><span>Профиль</span></button>
+            </div>
+        </div>
+        <div class="phone-shadow"></div>
+    </div>
+
+    <script>
+        let arenaMode = false;
+        let currentActivityTab = 'foyer';
+        let currentOrder = { items: [], total: 0 };
+        let bonusBalance = 350;
+
+        const bombers = [
+            { name: "Стефан Да Коста", games: 12, points: "7+11", total: 18, photo: "https://img.khl.ru/teamplayers/14215/22668/320.jpg" },
+            { name: "Брукс Мэйсек", games: 12, points: "9+6", total: 15, photo: "https://img.khl.ru/teamplayers/13010/34943/320.jpg" },
+            { name: "Никита Трямкин", games: 12, points: "3+10", total: 13, photo: "https://www.hc-avto.ru/media/players/image_tryamkin_nikita_a59aeb7853f1a2c5b3ba410ec205cde7.png" },
+            { name: "Анатолий Голышев", games: 12, points: "6+5", total: 11, photo: "https://static.challengeplace.com/2025/4/7/16/player/064e4b3b-f78a-4ce5-b007-5bd5d051d674.jpg" },
+            { name: "Джесси Блэкер", games: 12, points: "4+6", total: 10, photo: "https://img.khl.ru/teamplayers/13595/27236/320.jpg" }
+        ];
+        
+        const shopProducts = [
+            { name: "Игровая джерси", price: "5 990₽", image: "https://shop.hc-avto.ru/upload/resize_cache/iblock/744/hh8oj2qgvelp0ue0axykvt7fqkh1rhz1/1000_1000_1/STE_3271.webp" },
+            { name: "Толстовка классическая", price: "4 990₽", image: "https://shop.hc-avto.ru/upload/resize_cache/iblock/d28/4yl9sar5hklbh8m9z8q0ji38454no2jh/1000_1000_1/KHudikrasnoeLitso.webp" },
+            { name: "Шапка и шарф комплект", price: "1 290₽", image: "https://shop.hc-avto.ru/upload/resize_cache/iblock/151/fcmmrd8r6r2z0etyxfltmon8ntdoo346/1000_1000_1/Photo-157.webp" },
+            { name: "Бейсболка с логотипом", price: "1 790₽", image: "https://shop.hc-avto.ru/upload/resize_cache/iblock/095/9hmxjam13n0ppfpk5asmu7hr3m0x7fjs/1000_1000_1/Kepka1bok.webp" },
+            { name: "Кружка коллекционная", price: "890₽", image: "https://shop.hc-avto.ru/upload/resize_cache/iblock/9fb/98vl0npnqtvrahaatedpk63nns2rzck2/1000_1000_1/Photo-086.webp" }
+        ];
+
+        const foodMenu = [
+            { name: "🍔 Бургер с говядиной", price: 450 },
+            { name: "🌭 Хот-дог с сыром", price: 320 },
+            { name: "🍕 Пицца Маргарита", price: 550 },
+            { name: "🍺 Пиво разливное 0.5", price: 280 },
+            { name: "🥤 Газировка 0.33", price: 150 },
+            { name: "☕ Кофе американо", price: 180 }
+        ];
+
+        const teamsTable = [
+            { place: 1, name: "Металлург Мг", logo: "https://upload.wikimedia.org/wikipedia/ru/thumb/0/0e/HC_Metallurg_Magnitogorsk_Logo.svg/1280px-HC_Metallurg_Magnitogorsk_Logo.svg.png", games: 68, wins: 49, losses: 19, goals: "252-184", points: 105, lastMatches: "✅✅✅✅" },
+            { place: 2, name: "Авангард", logo: "https://upload.wikimedia.org/wikipedia/ru/thumb/6/64/HC_Avangard_Logo.svg/1280px-HC_Avangard_Logo.svg.png", games: 68, wins: 47, losses: 21, goals: "228-159", points: 99, lastMatches: "✅✅✅❌" },
+            { place: 3, name: "Ак Барс", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/1/11/Ak_Bars_Kazan_logo.svg/1280px-Ak_Bars_Kazan_logo.svg.png", games: 68, wins: 43, losses: 25, goals: "212-169", points: 94, lastMatches: "✅✅❌✅" },
+            { place: 4, name: "Автомобилист", logo: "https://upload.wikimedia.org/wikipedia/ru/thumb/a/ae/HC_Avtomobilist_Logo.svg/1280px-HC_Avtomobilist_Logo.svg.png", games: 68, wins: 40, losses: 28, goals: "206-164", points: 84, lastMatches: "✅❌✅✅" },
+            { place: 5, name: "Салават Юлаев", logo: "https://upload.wikimedia.org/wikipedia/ru/thumb/a/a0/HC_Salavat_Yulaev_Logo.svg/1280px-HC_Salavat_Yulaev_Logo.svg.png", games: 68, wins: 36, losses: 32, goals: "180-171", points: 78, lastMatches: "❌✅❌✅" },
+            { place: 6, name: "Трактор", logo: "https://upload.wikimedia.org/wikipedia/ru/thumb/c/c8/Traktor_Chelyabinsk.svg/1280px-Traktor_Chelyabinsk.svg.png", games: 68, wins: 33, losses: 35, goals: "205-195", points: 75, lastMatches: "❌❌❌✅" }
+        ];
+
+        function getLevelFromBonus(bonus) {
+            if (bonus >= 3000) return { name: "Золото", next: null, max: 5000 };
+            if (bonus >= 1500) return { name: "Серебро", next: 3000, max: 3000 };
+            if (bonus >= 500) return { name: "Бронза", next: 1500, max: 1500 };
+            return { name: "Нет статуса", next: 500, max: 500 };
+        }
+
+        function renderProfile() {
+            const levelInfo = getLevelFromBonus(bonusBalance);
+            const progressPercent = (bonusBalance / levelInfo.max) * 100;
+            
+            document.getElementById('profileContent').innerHTML = `
+                <div class="card">
+                    <div class="flex-between" style="margin-bottom: 12px;">
+                        <span><i class="fas fa-user-circle" style="font-size: 48px; color:#B22234;"></i> <strong style="font-size: 18px;">Анастасия Г.</strong></span>
+                        <span class="text-muted">ID: 5482-2025</span>
+                    </div>
+                    <div class="level-badge">
+                        <div class="level-name">${levelInfo.name}</div>
+                        <div class="progress-container">
+                            <div class="progress-labels">
+                                <span>0</span>
+                                <span>${levelInfo.next ? levelInfo.next : 'MAX'}</span>
+                            </div>
+                            <div class="progress-bar-bg">
+                                <div class="progress-fill-custom" style="width: ${Math.min(progressPercent, 100)}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bonus-balance">
+                        <div class="text-muted">БОНУСНЫЙ БАЛАНС</div>
+                        <div class="bonus-number">${bonusBalance}</div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">💰 Как заработать баллы?</div>
+                    <div class="earn-methods">
+                        <div class="earn-item"><div class="earn-icon">🎟️</div><div class="earn-text"><div class="earn-title">Покупка билетов</div><div class="earn-desc">1 балл за каждые 100₽</div></div></div>
+                        <div class="earn-item"><div class="earn-icon">✅</div><div class="earn-text"><div class="earn-title">Посещение матчей</div><div class="earn-desc">+25 баллов за визит</div></div></div>
+                        <div class="earn-item"><div class="earn-icon">🏬</div><div class="earn-text"><div class="earn-title">Покупка атрибутики</div><div class="earn-desc">+5% от суммы бонусами</div></div></div>
+                        <div class="earn-item"><div class="earn-icon">⏰</div><div class="earn-text"><div class="earn-title">Бонус за матчи в будни</div><div class="earn-desc">+50 баллов</div></div></div>
+                        <div class="earn-item"><div class="earn-icon">👥</div><div class="earn-text"><div class="earn-title">Пригласи друга</div><div class="earn-desc">+50 баллов (друг получает скидку 10%)</div></div></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-title">👑 Доступные привилегии</div>
+                    <div class="privilege-card"><strong>🥉 Бронза</strong> — Приоритетная рассылка новостей, участие в розыгрышах</div>
+                    <div class="privilege-card"><strong>🥈 Серебро</strong> — Приоритетная покупка билетов на плей-офф</div>
+                    <div class="privilege-card"><strong>🥇 Золото</strong> — Эксклюзивные встречи с игроками, экскурсии по раздевалке</div>
+                </div>
+                <div class="card">
+                    <div class="card-title">🎯 Активные акции</div>
+                    <div class="promo-card"><div class="flex-between"><span>🎁 Купи абонемент – получи футболку в подарок!</span><span class="tag" style="background:#fff2;">🔥</span></div></div>
+                    <div class="promo-card"><div class="promo-row"><span style="font-size: 15px; font-weight: 700;">🎟️ Индивидуальная скидка 30% на билет</span><span class="discount-badge">для вас</span></div><div class="text-muted" style="color: #ffcccc; margin-top: 6px;">Вы давно не были на матче – специальное предложение</div></div>
+                    <div class="promo-card"><div class="flex-between"><span style="font-size: 15px; font-weight: 700;">🎫 Льготные категории — скидка 50% на билеты</span><span class="discount-badge">❤️</span></div><div class="social-wrapper"><span class="social-category">Студенты</span><span class="social-category">Пенсионеры</span><span class="social-category">Инвалиды III группы</span><span class="social-category">Многодетные семьи</span></div><div class="text-muted" style="color: #ffcccc; font-size: 11px; margin-top: 8px;">При предъявлении удостоверения в кассе</div></div>
+                </div>
+            `;
+        }
+        
+        function renderMatchcenter() {
+            document.getElementById('matchContent').innerHTML = `
+                <div class="card">
+                    <div class="card-title">🏒 Турнирная таблица КХЛ 2025/26</div>
+                    <table class="standings-table">
+                        <thead>
+                            <tr>
+                                <th>#</th><th>Команда</th><th>И</th><th>В</th><th>П</th><th>Шайбы</th><th>О</th><th>Посл. матчи</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${teamsTable.map(team => `
+                                <tr ${team.name === 'Автомобилист' ? 'style="background:#FFF2F0; font-weight:600;"' : ''}>
+                                    <td>${team.place}</td>
+                                    <td style="text-align:left;"><img src="${team.logo}" class="team-logo" onerror="this.style.display='none'">${team.name}</td>
+                                    <td>${team.games}</td>
+                                    <td class="win-cell">${team.wins}</td>
+                                    <td class="loss-cell">${team.losses}</td>
+                                    <td>${team.goals}</td>
+                                    <td><strong>${team.points}</strong></td>
+                                    <td><span style="font-size: 11px; white-space: nowrap;">${team.lastMatches}</span></td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card">
+                    <div class="card-title">🏆 Плей-офф. 1/2 финала</div>
+                    <div class="match-info" style="background:#fafafc; padding:12px; border-radius:20px;">
+                        <div class="flex-between"><span><img src="https://upload.wikimedia.org/wikipedia/ru/thumb/0/0e/HC_Metallurg_Magnitogorsk_Logo.svg/1280px-HC_Metallurg_Magnitogorsk_Logo.svg.png" class="team-logo">Металлург Мг</span><span>1 : 1</span><span><img src="https://upload.wikimedia.org/wikipedia/ru/thumb/6/64/HC_Avangard_Logo.svg/1280px-HC_Avangard_Logo.svg.png" class="team-logo">Авангард</span></div>
+                        <div class="flex-between" style="margin-top: 12px;"><span><img src="https://upload.wikimedia.org/wikipedia/ru/thumb/c/c8/Traktor_Chelyabinsk.svg/1280px-Traktor_Chelyabinsk.svg.png" class="team-logo">Трактор</span><span>0 : 2</span><span><img src="https://upload.wikimedia.org/wikipedia/ru/thumb/a/ae/HC_Avtomobilist_Logo.svg/1280px-HC_Avtomobilist_Logo.svg.png" style="width:28px;">Автомобилист</span></div>
+                    </div>
+                    <button class="button-primary" style="margin-top:12px;">Купить билет</button>
+                </div>
+            `;
+        }
+
+        function renderHome(arenaMode) {
+            const homeDiv = document.getElementById('homeContent');
+            if (!homeDiv) return;
+            
+            if (!arenaMode) {
+                homeDiv.innerHTML = `
+                    <div class="card" style="background: linear-gradient(135deg, #B22234 0%, #000000 100%); color: white;">
+                        <div class="match-time">8 МАЯ 19:30</div>
+                        <div class="big-title">🎟️ БИЛЕТЫ В ПРОДАЖЕ 🎟️</div>
+                        <div class="flex-between" style="margin: 8px 0;"><span>📅 08.05 | 19:30</span><span>📍 УГМК Арена</span></div>
+                        <button class="button-primary" style="background: white; color:#B22234;">КУПИТЬ БИЛЕТЫ</button>
+                    </div>
+                    <div class="card">
+                        <div class="flex-between"><span class="arena-name">⚡ НОВОСТИ КЛУБА</span><span class="text-muted">Ко всем новостям →</span></div>
+                        <div class="news-item" style="margin-top:12px;">
+                            <h4>Решающий матч серии</h4>
+                            <p class="text-muted">8 мая 2026 · Клуб</p>
+                            <p>«Автомобилист» готов к пятой игре против «Трактора» на домашней арене.</p>
+                        </div>
+                        <div class="news-item">
+                            <h4>Билеты на плей-офф</h4>
+                            <p class="text-muted">8 и 10 мая пройдут матчи 1/2 финала Кубка Гагарина</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="flex-between"><span><strong>🏒 Лучшие бомбардиры (плей-офф)</strong></span><span class="tag">ЛИДЕРЫ</span></div>
+                        <div id="bombersList"></div>
+                    </div>
+                    <div class="card">
+                        <div class="flex-between"><span><strong>📅 Ближайшие матчи</strong></span><span class="text-muted">Плей-офф 1/2 финала</span></div>
+                        <div class="match-info">
+                            <div class="flex-between"><span><i class="fas fa-hockey-puck" style="color:#B22234;"></i> 8 мая, 19:30</span><span class="match-location">УГМК Арена</span></div>
+                            <div class="flex-between" style="margin:8px 0;">
+                                <span><img src="https://upload.wikimedia.org/wikipedia/ru/thumb/a/ae/HC_Avtomobilist_Logo.svg/1280px-HC_Avtomobilist_Logo.svg.png" class="team-logo" style="width:28px;height:28px;">Автомобилист</span>
+                                <span>—</span>
+                                <span><img src="https://upload.wikimedia.org/wikipedia/ru/thumb/c/c8/Traktor_Chelyabinsk.svg/1280px-Traktor_Chelyabinsk.svg.png" class="team-logo">Трактор</span>
+                            </div>
+                            <button class="button-outline">Купить билет</button>
+                        </div>
+                        <div class="match-info">
+                            <div class="flex-between"><span><i class="fas fa-hockey-puck" style="color:#B22234;"></i> 10 мая, 19:30</span><span class="match-location">Трактор Арена</span></div>
+                            <div class="flex-between" style="margin:8px 0;">
+                                <span><img src="https://upload.wikimedia.org/wikipedia/ru/thumb/c/c8/Traktor_Chelyabinsk.svg/1280px-Traktor_Chelyabinsk.svg.png" class="team-logo">Трактор</span>
+                                <span>—</span>
+                                <span><img src="https://upload.wikimedia.org/wikipedia/ru/thumb/a/ae/HC_Avtomobilist_Logo.svg/1280px-HC_Avtomobilist_Logo.svg.png" class="team-logo" style="width:28px;height:28px;">Автомобилист</span>
+                            </div>
+                            <button class="button-outline">Купить билет</button>
+                        </div>
+                    </div>
+                `;
+                const bombersContainer = document.getElementById('bombersList');
+                if (bombersContainer) {
+                    bombersContainer.innerHTML = bombers.map(b => `<div class="bombardier-row"><div class="player-photo"><img src="${b.photo}" onerror="this.style.display='none'; this.parentElement.innerHTML='${b.name.charAt(0)}'"></div><div style="flex:1;"><strong>${b.name}</strong></div><div>${b.games} игр</div><div>${b.points}</div><div><strong>${b.total}</strong></div></div>`).join('');
+                }
+            } else {
+                homeDiv.innerHTML = `
+                    <div class="card">
+                        <h3><i class="fas fa-concierge-bell"></i> Услуги на Арене</h3>
+                        <div class="service-item" data-service="food"><span>🍔 Заказать еду</span><i class="fas fa-chevron-right"></i></div>
+                        <div class="service-item" data-service="navigation"><span>📍 Навигация по арене</span><i class="fas fa-chevron-right"></i></div>
+                    </div>
+                    <div class="card">
+                        <div class="activity-tabs">
+                            <div class="activity-tab ${currentActivityTab === 'foyer' ? 'active' : ''}" data-activity="foyer">🎭 В фойе</div>
+                            <div class="activity-tab ${currentActivityTab === 'outside' ? 'active' : ''}" data-activity="outside">🏟️ На улице</div>
+                            <div class="activity-tab ${currentActivityTab === 'kids' ? 'active' : ''}" data-activity="kids">🧸 Детям</div>
+                        </div>
+                        <div id="foyerContent" class="activity-content ${currentActivityTab === 'foyer' ? 'active-content' : ''}">
+                            <div class="event-item"><div class="event-time">18:00</div><div class="event-name">Мастер-класс "Картина команда А"</div></div>
+                            <div class="event-item"><div class="event-time">18:00</div><div class="event-name">Развлекательная программа на сцене</div></div>
+                        </div>
+                        <div id="outsideContent" class="activity-content ${currentActivityTab === 'outside' ? 'active-content' : ''}">
+                            <div class="event-item"><div class="event-time">—</div><div class="event-name">На улице мероприятий не запланировано</div></div>
+                        </div>
+                        <div id="kidsContent" class="activity-content ${currentActivityTab === 'kids' ? 'active-content' : ''}">
+                            <div class="event-item"><div class="event-time">18:00</div><div class="event-name">Аэрогрим (Гардероб)</div></div>
+                            <div class="event-item"><div class="event-time">19:30</div><div class="event-name">Станция плакатов (2 этаж)</div></div>
+                            <div class="event-item"><div class="event-time">19:00</div><div class="event-name">Аэрохоккей (3A)</div></div>
+                            <div class="event-item"><div class="event-time">18:00</div><div class="event-name">Фан-грим (2 этаж)</div></div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="flex-between"><span><strong>📦 Каталог впечатлений</strong></span><span>Показать все →</span></div>
+                        <div class="flex-between" style="margin:8px 0;"><span>🎁 500 бонусных рублей</span><span class="price">доступно</span></div>
+                        <div class="flex-between" style="margin:8px 0;"><span>🏷️ Наклейка «ХК Автомобилист»</span><span class="bonus-available">150 бонусов</span></div>
+                        <div class="flex-between"><span>🎫 Скидка 20% на билет</span><span class="bonus-available">300 бонусов</span></div>
+                    </div>
+                    <div class="card">
+                        <div class="flex-between"><span><strong>📱 QR-код для входа</strong></span><i class="fas fa-qrcode" style="color:#B22234;"></i></div>
+                        <div class="qrcode-display"><i class="fas fa-qrcode"></i></div>
+                        <p class="text-muted" style="margin-top:8px;">Сканируйте для входа на стадион и получения бонусов</p>
+                    </div>
+                `;
+                document.querySelectorAll('.service-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        if (item.getAttribute('data-service') === 'food') showFoodOrderPage();
+                        else alert('📍 Навигация по арене: выберите сектор на карте для маршрута');
+                    });
+                });
+                document.querySelectorAll('.activity-tab').forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        currentActivityTab = tab.getAttribute('data-activity');
+                        document.querySelectorAll('.activity-tab').forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        document.querySelectorAll('.activity-content').forEach(c => c.classList.remove('active-content'));
+                        document.getElementById(`${currentActivityTab}Content`).classList.add('active-content');
+                    });
+                });
+            }
+        }
+        
+        function renderArena() {
+            document.getElementById('arenaContent').innerHTML = `
+                <div class="arena-photo"><img src="https://forum-100.ru/UPLOAD/2025/04/15/3-2-58.jpg" onerror="this.src='https://via.placeholder.com/800x400/222?text=УГМК+Арена'"></div>
+                <div class="card"><div class="flex-between"><h2 style="color:#B22234;"><i class="fas fa-building arena-icon"></i> УГМК Арена</h2><i class="fas fa-map-marked-alt" style="color:#B22234;"></i></div>
+                <p>Современная арена в центре Екатеринбурга. Вместимость: 12 600 зрителей.</p>
+                <div class="flex-between" style="margin:12px 0;"><span><i class="fas fa-location-dot inline-icon"></i> Степана Разина, 15</span><span class="tag">доступная среда</span></div></div>
+                <div class="card"><div class="flex-between"><span><strong>🗺️ Схема секторов</strong></span><i class="fas fa-map inline-icon"></i></div>
+                <img src="https://sun9-70.userapi.com/s/v1/ig2/710Tuwkr0dhkDv9bw2qWRbZcyObMmE-JqyrM1quc3BCnzcJ_SQD4aoYoal76lwFKrWWTCLoTvPmlnejWCk5V9Pu6.jpg?quality=95&as=32x25,48x37,72x56,108x84,160x124,240x186,360x279,480x372,540x419,640x497,720x559,1013x786&from=bu&u=sGPaUJdZedzYT9PQ85rhbOTLqBkfxvn1L9awgsid6SY&cs=640x0" alt="Схема секторов УГМК-Арены" class="sector-image">
+            `;
+        }
+        
+        function renderShop() {
+            document.getElementById('shopContent').innerHTML = `
+                <div class="card"><div class="flex-between"><span class="arena-name">🏬 Официальный магазин</span><i class="fas fa-shopping-cart"></i></div>
+                <div id="shopItemsList"></div><button class="button-primary" style="margin-top:12px;">Перейти в каталог</button></div>
+            `;
+            const container = document.getElementById('shopItemsList');
+            if (container) {
+                container.innerHTML = shopProducts.map(p => `
+                    <div class="product-item" data-product-name="${p.name}" data-product-price="${p.price}">
+                        <img src="${p.image}" class="product-image" onerror="this.src='https://via.placeholder.com/60/ccc?text=Product'">
+                        <div class="product-info">
+                            <div class="product-name">${p.name}</div>
+                            <div class="price">${p.price}</div>
+                        </div>
+                    </div>
+                `).join('');
+                
+                document.querySelectorAll('.product-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        const name = item.getAttribute('data-product-name');
+                        alert(`🛒 Товар "${name}" добавлен в корзину! Перейдите в корзину для оформления заказа.`);
+                    });
+                });
+            }
+        }
+        
+        function showFoodOrderPage() {
+            document.querySelectorAll('.tab-pane').forEach(pane => pane.style.display = 'none');
+            document.getElementById('foodOrderPage').style.display = 'block';
+            document.getElementById('foodOrderContent').innerHTML = `
+                <div class="back-button" id="backToHomeBtn"><i class="fas fa-arrow-left"></i> Назад</div>
+                <div class="card"><h3><i class="fas fa-concierge-bell"></i> Оформление заказа</h3>
+                <div class="pickup-info"><h4><i class="fas fa-store"></i> Способ получения: навынос</h4><p class="text-muted">Вы сможете забрать заказ в специальной зоне выдачи</p></div>
+                <label>📍 Выберите этаж получения:</label><select id="pickupFloor"><option value="1">1 этаж</option><option value="2">2 этаж</option><option value="3">3 этаж</option></select>
+                <label>🎯 Выберите сектор:</label><select id="pickupSector"><option value="A101">Сектор A101</option><option value="A102">Сектор A102</option><option value="B101">Сектор B101</option><option value="VIP">VIP ложа</option></select>
+                <div class="order-summary"><div class="flex-between"><span>🍔 Ваш заказ:</span><span id="orderItemsSummary">Нет выбранных блюд</span></div>
+                <div class="flex-between" style="margin-top:8px;"><span>💰 Итого:</span><span id="orderTotal" class="price">0 ₽</span></div></div>
+                <button class="button-primary" id="confirmOrderBtn">Подтвердить заказ</button></div>
+                <div class="card"><div class="flex-between"><span><strong>🍽️ МЕНЮ</strong></span><span class="text-muted">(нажмите на блюдо для добавления)</span></div>
+                <div id="foodMenuList"></div></div>
+            `;
+            const menuContainer = document.getElementById('foodMenuList');
+            if (menuContainer) {
+                menuContainer.innerHTML = foodMenu.map(item => `
+                    <div class="product-item" data-food-name="${item.name}" data-food-price="${item.price}" style="cursor:pointer;">
+                        <div class="product-icon"><i class="fas fa-utensils"></i></div>
+                        <div style="flex:1;"><strong>${item.name}</strong></div>
+                        <div class="price">${item.price} ₽</div>
+                    </div>
+                `).join('');
+                document.querySelectorAll('[data-food-name]').forEach(item => {
+                    item.addEventListener('click', () => {
+                        const name = item.getAttribute('data-food-name');
+                        const price = parseInt(item.getAttribute('data-food-price'));
+                        const existing = currentOrder.items.find(i => i.name === name);
+                        if (existing) existing.quantity++;
+                        else currentOrder.items.push({ name, price, quantity: 1 });
+                        currentOrder.total += price;
+                        document.getElementById('orderItemsSummary').innerText = currentOrder.items.map(i => `${i.name} x${i.quantity}`).join(', ');
+                        document.getElementById('orderTotal').innerText = currentOrder.total + ' ₽';
+                    });
+                });
+            }
+            document.getElementById('backToHomeBtn')?.addEventListener('click', () => { currentOrder = { items: [], total: 0 }; setActiveTab('home'); });
+            document.getElementById('confirmOrderBtn')?.addEventListener('click', () => {
+                if (currentOrder.items.length === 0) { alert('Выберите блюда'); return; }
+                alert(`✅ Заказ оформлен!\nМесто выдачи: ${document.getElementById('pickupFloor').value} этаж, ${document.getElementById('pickupSector').value}\nСумма: ${currentOrder.total} ₽`);
+                currentOrder = { items: [], total: 0 };
+                setActiveTab('home');
+            });
+        }
+        
+        function setActiveTab(tabId) {
+            const panes = ['homeTab', 'matchTab', 'arenaTab', 'shopTab', 'profileTab', 'foodOrderPage'];
+            panes.forEach(id => { const el = document.getElementById(id); if (el) el.style.display = 'none'; });
+            const activePane = document.getElementById(tabId + 'Tab');
+            if (activePane) activePane.style.display = 'block';
+            document.querySelectorAll('.nav-item').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId);
+            });
+            if (tabId === 'home') renderHome(arenaMode);
+            else if (tabId === 'match') renderMatchcenter();
+            else if (tabId === 'arena') renderArena();
+            else if (tabId === 'shop') renderShop();
+            else if (tabId === 'profile') renderProfile();
+        }
+        
+        document.querySelectorAll('.nav-item').forEach(btn => {
+            btn.addEventListener('click', () => setActiveTab(btn.getAttribute('data-tab')));
+        });
+        document.getElementById('arenaModeToggle').addEventListener('change', (e) => {
+            arenaMode = e.target.checked;
+            if (document.querySelector('.nav-item.active').getAttribute('data-tab') === 'home') renderHome(arenaMode);
+        });
+        
+        renderHome(false);
+        renderMatchcenter();
+        setActiveTab('profile');
+    </script>
+</body>
+</html>
